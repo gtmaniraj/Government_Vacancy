@@ -1,0 +1,30 @@
+{
+  "fonts": 2,
+  "title": {
+    "text": "Gautam Maniraj",
+    "w": 662,
+    "h": 88,
+    "x": 269,
+    "y": 274,
+    "right": 931,
+    "bottom": 362
+  },
+  "tag": {
+    "text": "Government vacancies",
+    "w": 450,
+    "h": 26,
+    "x": 375,
+    "y": 399,
+    "right": 825,
+    "bottom": 425
+  },
+  "colophon": {
+    "text": "gautammaniraj.com.np",
+    "w": 295,
+    "h": 15,
+    "x": 453,
+    "y": 453,
+    "right": 748,
+    "bottom": 468
+  }
+}

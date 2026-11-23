@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <style>
+    @font-face {
+      font-family: "Lib";
+      src: url("file:///usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Lib";
+      src: url("file:///usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      background: #f3efe6;
+    }
+    body {
+      font-family: "Lib", "Liberation Serif", "Times New Roman", serif;
+      color: #1a1612;
+    }
+    .sheet {
+      width: 1200px;
+      height: 630px;
+      position: relative;
+      background: #f3efe6;
+    }
+    .band {
+      position: absolute;
+      left: 72px;
+      right: 72px;
+      height: 10px;
+    }
+    .band.top { top: 48px; }
+    .band.bot { bottom: 48px; }
+    .band .crimson { display: block; height: 6px; background: #8f1d2c; }
+    .band .gold { display: block; height: 2px; background: #8a5a12; margin-top: 2px; }
+    .band.bot .gold { margin-top: 0; margin-bottom: 2px; }
+    .center {
+      position: absolute;
+      left: 80px;
+      right: 80px;
+      top: 78px;
+      bottom: 78px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .mark { width: 96px; height: 96px; display: block; }
+    h1 {
+      margin-top: 16px;
+      font-weight: 700;
+      font-size: 96px;
+      line-height: 0.92;
+      color: #8f1d2c;
+      letter-spacing: -0.03em;
+      white-space: nowrap;
+    }
+    .rule {
+      width: 196px;
+      height: 1px;
+      background: #8a5a12;
+      margin: 20px 0 16px;
+    }
+    .tag {
+      font-weight: 400;
+      font-size: 26px;
+      line-height: 1;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #1a1612;
+      white-space: nowrap;
+    }
+    .colophon {
+      margin-top: 28px;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: #8a5a12;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="band top" aria-hidden="true"><span class="crimson"></span><span class="gold"></span></div>
+    <div class="band bot" aria-hidden="true"><span class="gold"></span><span class="crimson"></span></div>
+    <div class="center">
+      <svg class="mark" viewBox="0 0 108 108" aria-hidden="true">
+        <circle cx="54" cy="54" r="51" fill="none" stroke="#8a5a12" stroke-width="1.25"/>
+        <circle cx="54" cy="54" r="46.5" fill="none" stroke="#8f1d2c" stroke-width="0.6"/>
+        <path fill="#8f1d2c" d="M30 36h3.2L78 46.2 33.2 56H30z"/>
+        <path fill="#8f1d2c" d="M28 60h3.2L82 72.4 31.2 84H28z"/>
+      </svg>
+      <h1>Gautam Maniraj</h1>
+      <div class="rule"></div>
+      <p class="tag">Government vacancies</p>
+      <p class="colophon">gautammaniraj.com.np</p>
+    </div>
+  </div>
+</body>
+</html>

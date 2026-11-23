@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Gautam Maniraj — Government vacancies",
+      "hasCanvas": false,
+      "bodyTextLen": 2658,
+      "bodyTextHash": "305503fd3bcd6d3e38cf749d6b89beb05b9685410cfaa1d0e8f83feb24d93ae4",
+      "bodyTextPrefix": "gautammaniraj.com.np Gautam Maniraj Government vacancy desk Toda",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Gautam Maniraj — Government vacancies",
+      "hasCanvas": false,
+      "bodyTextLen": 2658,
+      "bodyTextHash": "305503fd3bcd6d3e38cf749d6b89beb05b9685410cfaa1d0e8f83feb24d93ae4",
+      "bodyTextPrefix": "gautammaniraj.com.np Gautam Maniraj Government vacancy desk Toda",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}
