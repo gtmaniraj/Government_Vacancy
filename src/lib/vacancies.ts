@@ -1,4 +1,4 @@
-export type SourceId = "psc" | "tsc";
+export type SourceId = "psc" | "tsc" | "banks" | "ntc" | "nea";
 
 export type VacancyStatus = "open" | "double" | "closed" | "notice";
 
@@ -40,3 +40,11 @@ export type Board = {
   sources: SourceHealth[];
   items: Vacancy[];
 };
+
+export const SOURCE_FILTERS: { id: SourceId; label: string }[] = [
+  { id: "psc", label: "Lok Sewa Aayog" },
+  { id: "tsc", label: "Teachers Service Commission" },
+  { id: "banks", label: "A-class banks" },
+  { id: "ntc", label: "Nepal Telecom" },
+  { id: "nea", label: "Nepal Electricity Authority" },
+];
