@@ -15,7 +15,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "Nepal government vacancies from Lok Sewa, the Teachers Service Commission, A-class banks, Nepal Telecom, and Nepal Electricity Authority.",
+          "Nepal vacancies from Lok Sewa, province PSCs, the Teachers Service Commission, Nepal Rastra Bank, Rastriya Banijya Bank, ADBL and Nepal Bank. Nepali notices are shown in English too.",
       },
       { name: "theme-color", content: "#8f1d2c" },
     ],

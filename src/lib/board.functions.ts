@@ -1,5 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
+import { extraBundle } from "@/data/openings";
 import { daysFromToday, formatBs, todayBsIso } from "@/lib/bs";
+import { annotateVacancy } from "@/lib/translate";
 import type { Board, SourceHealth, SourceId, Vacancy, VacancyStatus } from "@/lib/vacancies";
 
 const UA = "GautamManirajVacancyDesk/1.0 (+https://gautammaniraj.com.np)";
@@ -209,7 +211,7 @@ export function parseTscHtml(html: string): Vacancy[] {
       sourceId: "tsc",
       source: "Teachers Service Commission",
       title,
-      organization: "शिक्षक सेवा आयोग",
+      organization: "Teachers Service Commission",
       publishedLabel: label || undefined,
       href: `https://tsc.gov.np${path}`,
       pdfUrl: pdf?.[1],
@@ -233,7 +235,7 @@ export function parseTscHtml(html: string): Vacancy[] {
       sourceId: "tsc",
       source: "Teachers Service Commission",
       title,
-      organization: "शिक्षक सेवा आयोग",
+      organization: "Teachers Service Commission",
       publishedLabel: label,
       href: path.startsWith("http") ? path : `https://tsc.gov.np${path}`,
       kind,
@@ -294,6 +296,7 @@ export async function loadBoard(fresh: boolean): Promise<Board> {
   if (!fresh && cache && Date.now() - cache.at < TTL_MS) return cache.data;
 
   const todayBs = todayBsIso();
+  const extras = extraBundle(todayBs);
   const [pscAds, pscNotes, tsc] = await Promise.all([
     attempt("psc", "Lok Sewa Aayog", "https://psc.gov.np", () => fetchPscAds(todayBs)),
     attempt("psc", "Lok Sewa Aayog", "https://psc.gov.np", () => fetchPscHighlights(todayBs)),
@@ -314,6 +317,7 @@ export async function loadBoard(fresh: boolean): Promise<Board> {
       error: pscOk ? undefined : pscError || "Could not reach psc.gov.np",
     },
     tsc.health,
+    ...extras.sources,
   ];
 
   const board: Board = {
@@ -321,7 +325,9 @@ export async function loadBoard(fresh: boolean): Promise<Board> {
     todayBs,
     todayLabel: formatBs(todayBs),
     sources,
-    items: sortItems([...pscAds.items, ...pscNotes.items, ...tsc.items]),
+    items: sortItems(
+      [...pscAds.items, ...pscNotes.items, ...tsc.items, ...extras.items].map(annotateVacancy),
+    ),
   };
 
   if (sources.some((source) => source.ok)) {
