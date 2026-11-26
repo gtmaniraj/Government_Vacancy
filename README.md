@@ -1,6 +1,6 @@
 # Gautam Maniraj — Government vacancy desk
 
-One page of open posts and notices from Lok Sewa Aayog, the Teachers Service Commission, Nepal’s A-class commercial banks, Nepal Telecom, and Nepal Electricity Authority.
+One page of open posts and notices from Lok Sewa Aayog, the Teachers Service Commission (including the secondary teaching licence), Nepal’s A-class commercial banks, Nepal Telecom, and Nepal Electricity Authority.
 
 The site does not take applications. Every row links to the office that published the notice. Apply only on that official site.
 

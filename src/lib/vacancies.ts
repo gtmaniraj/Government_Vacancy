@@ -80,7 +80,7 @@ export type Board = {
 export const SOURCE_FILTERS: { id: SourceId; label: string }[] = [
   { id: "psc", label: "Lok Sewa Aayog" },
   { id: "ppsc", label: "Province PSC" },
-  { id: "tsc", label: "Teachers" },
+  { id: "tsc", label: "Teaching licence" },
   { id: "nrb", label: "Nepal Rastra Bank" },
   { id: "rbb", label: "Rastriya Banijya Bank" },
   { id: "adbl", label: "ADBL" },

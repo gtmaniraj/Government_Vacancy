@@ -307,6 +307,13 @@ export async function loadBoard(fresh: boolean): Promise<Board> {
   const pscOk = pscAds.health.ok || pscNotes.health.ok;
   const pscError = [pscAds.health.error, pscNotes.health.error].filter(Boolean).join("; ");
 
+  const tscSeed = extras.items.filter((item) => item.sourceId === "tsc").length;
+  tsc.health.count += tscSeed;
+  if (!tsc.health.ok && tscSeed > 0) {
+    tsc.health.ok = true;
+    tsc.health.error = undefined;
+  }
+
   const sources: SourceHealth[] = [
     {
       id: "psc",

@@ -426,6 +426,30 @@ function pscMatch(item: Vacancy): Syllabus | undefined {
   };
 }
 
+const TSC_LICENSE_PDF =
+  "https://giwmscdnone.gov.np/media/pdf_upload/%E0%A4%AE%E0%A4%BE%E0%A4%A7%E0%A5%8D%E0%A4%AF%E0%A4%AE%E0%A4%BF%E0%A4%95%20%E0%A4%A4%E0%A4%B9%20%E0%A4%B2%E0%A4%BE%E0%A4%87%E0%A4%B8%E0%A5%87%E0%A4%A8%E0%A5%8D%E0%A4%B8%20%E0%A4%AA%E0%A4%BE%E0%A4%A0%E0%A5%8D%E0%A4%AF%E0%A4%95%E0%A5%8D%E0%A4%B0%E0%A4%AE_4nkwjkw.pdf";
+const TSC_SYLLABUS_INDEX = "https://tsc.gov.np/category/79/?page=2";
+
+function tscLicense(item: Vacancy): Syllabus | undefined {
+  if (item.sourceId !== "tsc") return undefined;
+  const blob = `${item.id} ${item.title} ${item.titleNp ?? ""} ${item.post ?? ""}`;
+  if (!/tsc-license|teaching licen[cs]e|अध्यापन अनुमति/i.test(blob)) return undefined;
+  return syllabus(
+    "Teachers Service Commission",
+    TSC_SYLLABUS_INDEX,
+    TSC_LICENSE_PDF,
+    "Secondary teaching licence syllabus 2078",
+    [
+      "Secondary level teaching licence, advertisement 45/2083/84. The written exam is objective. The commission will publish the date later.",
+      "The notice points to the syllabus published on 2078/12/02. The file on the commission site is the 2078 secondary teaching-licence curriculum: full marks 100, pass mark 50, time 1 hour.",
+      "It is one paper on school education in Nepal: the education system, new thinking in teaching, child psychology, school and community, the teacher's professional role, classroom management, curriculum, methods, assessment, and current education issues. This file has no separate subject paper.",
+      "The PDF is the official text. These lines only put the exam shape in English.",
+    ],
+  );
+}
+
 export function matchSyllabus(item: Vacancy): Syllabus | undefined {
-  return provinceSyllabus(item.id) ?? nrb(item.id) ?? ntc(item.id) ?? closedBank(item) ?? pscMatch(item);
+  return (
+    tscLicense(item) ?? provinceSyllabus(item.id) ?? nrb(item.id) ?? ntc(item.id) ?? closedBank(item) ?? pscMatch(item)
+  );
 }

@@ -32,6 +32,7 @@ type Seed = {
   publishedLabel?: string;
   href: string;
   applyUrl?: string;
+  pdfUrl?: string;
   kind: "vacancy" | "notice";
 };
 
@@ -169,6 +170,32 @@ function stamp(item: Seed, today: string): Vacancy {
 
 export function extraBundle(today: string): { sources: SourceHealth[]; items: Vacancy[] } {
   const items: Vacancy[] = [];
+
+  items.push(
+    stamp(
+      {
+        id: "tsc-license-secondary-2083",
+        sourceId: "tsc",
+        source: "Teachers Service Commission",
+        title: "Secondary level teaching licence",
+        titleNp: "माध्यमिक तहको अध्यापन अनुमतिपत्र — विज्ञापन २०८३",
+        organization: "Teachers Service Commission",
+        post: "Secondary level teaching licence",
+        level: "Secondary",
+        code: "45/2083/84",
+        category: "teaching",
+        deadlineBs: "2083-09-07",
+        doubleDeadlineBs: "2083-09-14",
+        publishedLabel: "30 Kartik 2083",
+        href: "https://tsc.gov.np/content/4259/regarding-publication-of-advertisement-for-secondary-level/",
+        applyUrl: "https://license.tsc.gov.np/",
+        pdfUrl: "https://giwmscdnone.gov.np/media/pdf_upload/Liscence%20Advertise_000029_tp2khwk.pdf",
+        kind: "vacancy",
+        note: "Advertisement 45/2083/84, first published 30 Kartik 2083. Written objective exam. Fee Rs 1,000. Forms opened 7 Mangsir 2083. Regular deadline 7 Poush 2083, double fee until 14 Poush 2083. You must be 18 by the regular deadline. Bachelor's degree plus the training in Rule 9, except a bachelor's in science, mathematics, English, accounts, computer, civil engineering, electrical engineering, animal husbandry or crop science. Apply only on license.tsc.gov.np.",
+      },
+      today,
+    ),
+  );
 
   for (const post of NTC_POSTS) {
     items.push(
