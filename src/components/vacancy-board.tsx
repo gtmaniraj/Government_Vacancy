@@ -3,13 +3,15 @@ import { ExternalLink, RefreshCw, Search } from "lucide-react";
 import { CATEGORY_LABEL, CATEGORY_ORDER } from "@/lib/categories";
 import { refreshBoard } from "@/lib/board.functions";
 import { formatBs } from "@/lib/bs";
+import { matchSyllabus } from "@/lib/syllabus";
 import type { Board, PostCategory, SourceId, Vacancy, VacancyStatus } from "@/lib/vacancies";
 import { SOURCE_FILTERS } from "@/lib/vacancies";
 
-type View = "all" | "open" | "notices" | "posts";
+type View = "all" | "open" | "closed" | "notices" | "posts";
 
 const VIEWS: { id: View; label: string }[] = [
   { id: "open", label: "Accepting now" },
+  { id: "closed", label: "Closed" },
   { id: "posts", label: "By post" },
   { id: "notices", label: "Notices" },
   { id: "all", label: "Everything" },
@@ -71,8 +73,9 @@ export function VacancyBoard({ initial }: { initial: Board }) {
   const counts = useMemo(() => {
     const open = board.items.filter((item) => item.status === "open" || item.status === "double");
     const soon = open.filter((item) => item.daysLeft != null && item.daysLeft <= 7);
+    const closed = board.items.filter((item) => item.status === "closed");
     const notices = board.items.filter((item) => item.status === "notice");
-    return { open: open.length, soon: soon.length, notices: notices.length };
+    return { open: open.length, soon: soon.length, closed: closed.length, notices: notices.length };
   }, [board.items]);
 
   const categoryCounts = useMemo(() => {
@@ -81,6 +84,7 @@ export function VacancyBoard({ initial }: { initial: Board }) {
     for (const item of board.items) {
       if (source !== "all" && item.sourceId !== source) continue;
       if (view === "open" && item.status !== "open" && item.status !== "double") continue;
+      if (view === "closed" && item.status !== "closed") continue;
       if (view === "notices" && item.status !== "notice") continue;
       if (view === "posts" && item.kind !== "vacancy") continue;
       if (needle) {
@@ -102,6 +106,7 @@ export function VacancyBoard({ initial }: { initial: Board }) {
       if (source !== "all" && item.sourceId !== source) return false;
       if (category !== "all" && item.category !== category) return false;
       if (view === "open" && item.status !== "open" && item.status !== "double") return false;
+      if (view === "closed" && item.status !== "closed") return false;
       if (view === "notices" && item.status !== "notice") return false;
       if (view === "posts" && item.kind !== "vacancy") return false;
       if (!needle) return true;
@@ -127,7 +132,7 @@ export function VacancyBoard({ initial }: { initial: Board }) {
   const page = shown.slice(0, visible);
 
   const groups = useMemo(() => {
-    if (view !== "posts") return [];
+    if (view !== "posts" && view !== "closed") return [];
     const buckets = new Map<PostCategory, Vacancy[]>();
     for (const item of page) {
       const key = item.category ?? "other";
@@ -180,14 +185,15 @@ export function VacancyBoard({ initial }: { initial: Board }) {
           </h1>
           <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted">
             Nepal Rastra Bank, Rastriya Banijya Bank, Agricultural Development Bank and Nepal Bank
-            are listed post by post. Province commissions sit beside federal Lok Sewa and the
-            Teachers Service Commission. This desk does not take applications.
+            are listed post by post. Closed advertisements sit in their own list, still sorted by the
+            kind of post. Each card carries an English reading of the official syllabus.
           </p>
         </section>
 
-        <section className="mt-8 grid gap-3 sm:grid-cols-3">
+        <section className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Stat label="Accepting applications" value={counts.open} />
           <Stat label="Closing within 7 days" value={counts.soon} />
+          <Stat label="Closed vacancies" value={counts.closed} />
           <Stat label="Notices and updates" value={counts.notices} />
         </section>
 
@@ -286,6 +292,7 @@ export function VacancyBoard({ initial }: { initial: Board }) {
           <p className="text-sm text-muted">
             {shown.length} shown · read {whenFetched(board.fetchedAt)} NPT
             {view === "posts" ? " · grouped by the kind of post" : ""}
+            {view === "closed" ? " · closed posts grouped by category" : ""}
             {refreshError ? ` · ${refreshError}` : ""}
           </p>
         </section>
@@ -306,14 +313,17 @@ export function VacancyBoard({ initial }: { initial: Board }) {
           <div className="mt-4 rounded-2xl border border-line bg-card px-5 py-10 text-center">
             <p className="font-display text-2xl">Nothing matches</p>
             <p className="mt-2 text-sm text-muted">
-              Closed bank advertisements are under By post. Notices from the commissions are under Notices.
+              Closed bank advertisements are under Closed, grouped by the kind of post. Notices from the commissions are under Notices.
             </p>
           </div>
-        ) : view === "posts" ? (
+        ) : view === "posts" || view === "closed" ? (
           <div className="mt-4 flex flex-col gap-8">
             {groups.map((group) => (
               <section key={group.id}>
-                <h2 className="font-display text-2xl">{CATEGORY_LABEL[group.id]}</h2>
+                <h2 className="font-display text-2xl">
+                  {CATEGORY_LABEL[group.id]}
+                  {view === "closed" ? " · closed" : ""}
+                </h2>
                 <ul className="mt-3 flex flex-col gap-3">
                   {group.items.map((item) => (
                     <Row key={item.id} item={item} />
@@ -359,6 +369,42 @@ export function VacancyBoard({ initial }: { initial: Board }) {
           </p>
         </footer>
       </main>
+    </div>
+  );
+}
+
+function SyllabusBlock({ item }: { item: Vacancy }) {
+  const syllabus = matchSyllabus(item);
+  if (!syllabus) return null;
+  return (
+    <div className="mt-3 rounded-xl bg-paper px-3 py-3">
+      <p className="text-sm font-medium text-ink">Syllabus in English · {syllabus.publisher}</p>
+      <ul className="mt-2 list-disc space-y-1 pl-4 text-sm leading-relaxed text-ink">
+        {syllabus.english.map((line) => (
+          <li key={line}>{line}</li>
+        ))}
+      </ul>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {syllabus.papers.map((paper) => (
+          <a
+            key={`${paper.label}-${paper.url}`}
+            href={paper.url}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex min-h-11 items-center rounded-full border border-line bg-card px-4 text-sm font-medium text-ink"
+          >
+            {paper.label}
+          </a>
+        ))}
+        <a
+          href={syllabus.indexUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex min-h-11 items-center rounded-full border border-line bg-card px-4 text-sm font-medium text-crimson"
+        >
+          Official syllabus list
+        </a>
+      </div>
     </div>
   );
 }
@@ -411,6 +457,7 @@ function Row({ item }: { item: Vacancy }) {
       {nepali ? <p className="mt-1 text-sm leading-relaxed text-ink">{nepali}</p> : null}
       <p className="mt-1 text-sm text-muted">{item.organization}</p>
       {item.note ? <p className="mt-2 text-sm leading-relaxed text-muted">{item.note}</p> : null}
+      <SyllabusBlock item={item} />
       <dl className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
         {typeof item.openings === "number" ? (
           <div>

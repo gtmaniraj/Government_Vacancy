@@ -51,6 +51,15 @@ export type Vacancy = {
   daysLeft: number | null;
 };
 
+export type SyllabusPaper = { label: string; url: string };
+
+export type Syllabus = {
+  publisher: string;
+  indexUrl: string;
+  papers: SyllabusPaper[];
+  english: string[];
+};
+
 export type SourceHealth = {
   id: SourceId;
   name: string;
