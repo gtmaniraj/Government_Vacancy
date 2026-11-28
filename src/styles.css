@@ -8,8 +8,12 @@
   --color-ink: #1a1612;
   --color-muted: #6d645b;
   --color-line: #e3dacb;
+  --color-blush: #f6e4e6;
+  --color-land: #e7dcc8;
   --color-crimson: #8f1d2c;
   --color-crimson-deep: #6d1220;
+  --shadow-rest: 0 1px 0 rgb(26 22 18 / 0.04);
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
@@ -25,9 +29,18 @@
   }
 
   ::selection {
-    background: #f3d5d8;
+    background: var(--color-blush);
     color: var(--color-ink);
   }
+
+  :focus-visible {
+    outline: 2px solid var(--color-crimson);
+    outline-offset: 2px;
+  }
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
 }
 
 .chip-row {
